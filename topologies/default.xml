@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<scenario name="/topologies/default.xml">
+  <networks>
+    <network id="1" name="wlan1" type="WIRELESS_LAN">
+      <position x="410" y="346" lat="47.5744710044" lon="-122.124222013" alt="2.0"/>
+    </network>
+  </networks>
+  <devices>
+    <device id="2" name="n2" type="dtnhost">
+      <position x="159" y="624" lat="47.570757388" lon="-122.12928982" alt="2.0"/>
+      <services>
+        <service name="DTN7"/>
+        <service name="bwm-ng"/>
+        <service name="pidstat"/>
+      </services>
+    </device>
+    <device id="3" name="n3" type="dtnhost">
+      <position x="557" y="71" lat="47.5781598144" lon="-122.121228348" alt="2.0"/>
+      <services>
+        <service name="DTN7"/>
+        <service name="bwm-ng"/>
+        <service name="pidstat"/>
+      </services>
+    </device>
+    <device id="4" name="n4" type="dtnhost">
+      <position x="777" y="692" lat="47.5697454828" lon="-122.116981571" alt="2.0"/>
+      <services>
+        <service name="DTN7"/>
+        <service name="bwm-ng"/>
+        <service name="pidstat"/>
+      </services>
+    </device>
+    <device id="5" name="n5" type="dtnhost">
+      <position x="122" y="120" lat="47.5775646814" lon="-122.129914978" alt="2.0"/>
+      <services>
+        <service name="DTN7"/>
+        <service name="bwm-ng"/>
+        <service name="pidstat"/>
+      </services>
+    </device>
+    <device id="6" name="n6" type="dtnhost">
+      <position x="851" y="359" lat="47.5742280736" lon="-122.115430272" alt="2.0"/>
+      <services>
+        <service name="DTN7"/>
+        <service name="bwm-ng"/>
+        <service name="pidstat"/>
+      </services>
+    </device>
+  </devices>
+  <links>
+    <link node_one="1" node_two="2">
+      <interface_two id="0" name="eth0" mac="00:00:00:aa:00:00" ip4="10.0.0.1" ip4_mask="24" ip6="2001::1" ip6_mask="128"/>
+      <options delay="20000" bandwidth="54000000" type="0" unidirectional="0"/>
+    </link>
+    <link node_one="1" node_two="5">
+      <interface_two id="0" name="eth0" mac="00:00:00:aa:00:01" ip4="10.0.0.2" ip4_mask="24" ip6="2001::2" ip6_mask="128"/>
+      <options delay="20000" bandwidth="54000000" type="0" unidirectional="0"/>
+    </link>
+    <link node_one="1" node_two="4">
+      <interface_two id="0" name="eth0" mac="00:00:00:aa:00:02" ip4="10.0.0.3" ip4_mask="24" ip6="2001::3" ip6_mask="128"/>
+      <options delay="20000" bandwidth="54000000" type="0" unidirectional="0"/>
+    </link>
+    <link node_one="1" node_two="6">
+      <interface_two id="0" name="eth0" mac="00:00:00:aa:00:03" ip4="10.0.0.4" ip4_mask="24" ip6="2001::4" ip6_mask="128"/>
+      <options delay="20000" bandwidth="54000000" type="0" unidirectional="0"/>
+    </link>
+    <link node_one="1" node_two="3">
+      <interface_two id="0" name="eth0" mac="00:00:00:aa:00:04" ip4="10.0.0.5" ip4_mask="24" ip6="2001::5" ip6_mask="128"/>
+      <options delay="20000" bandwidth="54000000" type="0" unidirectional="0"/>
+    </link>
+  </links>
+  <mobility_configurations>
+    <mobility_configuration node="1" model="basic_range">
+      <configuration name="range" value="275"/>
+      <configuration name="bandwidth" value="54000000"/>
+      <configuration name="jitter" value="0"/>
+      <configuration name="delay" value="20000"/>
+      <configuration name="error" value="0"/>
+    </mobility_configuration>
+  </mobility_configurations>
+  <session_origin lat="47.5791667" lon="-122.132322" alt="2.0" scale="150.0"/>
+  <session_metadata>
+    <configuration name="global_options" value="interface_names=no ip_addresses=yes ipv6_addresses=no node_labels=yes link_labels=yes show_api=no background_images=no annotations=yes grid=no traffic_start=0"/>
+    <configuration name="canvas c1" value="{name {Canvas1}}"/>
+  </session_metadata>
+  <default_services>
+    <node type="dtnhost">
+      <service name="DTN7"/>
+      <service name="bwm-ng"/>
+      <service name="pidstat"/>
+    </node>
+    <node type="prouter">
+      <service name="zebra"/>
+      <service name="OSPFv2"/>
+      <service name="OSPFv3"/>
+      <service name="IPForward"/>
+    </node>
+    <node type="PC">
+      <service name="DefaultRoute"/>
+    </node>
+    <node type="host">
+      <service name="DefaultRoute"/>
+      <service name="SSH"/>
+    </node>
+    <node type="mdr">
+      <service name="zebra"/>
+      <service name="OSPFv3MDR"/>
+      <service name="IPForward"/>
+    </node>
+    <node type="router">
+      <service name="zebra"/>
+      <service name="OSPFv2"/>
+      <service name="OSPFv3"/>
+      <service name="IPForward"/>
+    </node>
+  </default_services>
+</scenario>

@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<scenario name="/topologies/chain/2.xml">
+  <networks/>
+  <devices>
+    <device id="1" name="n1" type="host">
+      <position x="507" y="204" lat="47.5763725634" lon="-122.12225555" alt="2.0"/>
+      <services>
+        <service name="DefaultRoute"/>
+      </services>
+    </device>
+    <device id="2" name="n2" type="host">
+      <position x="263" y="203" lat="47.5764231956" lon="-122.127121512" alt="2.0"/>
+      <services>
+        <service name="DefaultRoute"/>
+      </services>
+    </device>
+  </devices>
+  <links>
+    <link node_one="1" node_two="2">
+      <interface_one id="0" name="eth0" mac="00:00:00:aa:00:00" ip4="10.0.0.10" ip4_mask="24" ip6="2001::10" ip6_mask="64"/>
+      <interface_two id="0" name="eth0" mac="00:00:00:aa:00:01" ip4="10.0.0.11" ip4_mask="24" ip6="2001::11" ip6_mask="64"/>
+      <options delay="160" bandwidth="54000000" type="1" unidirectional="0"/>
+    </link>
+  </links>
+  <session_origin lat="47.5791667" lon="-122.132322" alt="2.0" scale="150.0"/>
+  <session_metadata>
+    <configuration name="global_options" value="interface_names=no ip_addresses=yes ipv6_addresses=no node_labels=yes link_labels=yes show_api=no background_images=no annotations=yes grid=no traffic_start=0"/>
+    <configuration name="canvas c1" value="{name {Canvas1}}"/>
+  </session_metadata>
+  <default_services>
+    <node type="host">
+      <service name="DefaultRoute"/>
+    </node>
+  </default_services>
+</scenario>

@@ -1,0 +1,19 @@
+version: "3"
+services:
+  dtn7-playground:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - /lib/modules:/lib/modules
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ./dotcore:/root/.core
+      - ./topologies:/topologies
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+      - SYS_ADMIN
+    environment:
+      - CORE_PARAMS=/topologies/default.xml
+      - DISPLAY
+      - BACKEND
