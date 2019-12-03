@@ -3,8 +3,8 @@ FROM golang:1.12 AS dtn7-builder
 
 COPY dtn7 /dtn7
 WORKDIR /dtn7
-RUN go build -o /dtn7cat ./cmd/dtncat \
-    && go build -o /dtn7d ./cmd/dtnd
+RUN go build -race -o /dtn7cat ./cmd/dtncat \
+    && go build -race -o /dtn7d ./cmd/dtnd
 
 ### Compose the actual worker container
 FROM maciresearch/core_worker:0.4.2

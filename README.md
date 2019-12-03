@@ -23,6 +23,19 @@ xhost +local:root
 xhost -local:root
 ```
 
+## Test local development
+
+If you want to check your latest changes, you might want to bind mount your
+dtn7 directory over the overlay.
+
+```sh
+# Bind mound
+sudo mount --bind /your/dtn7/directory dtn7
+
+# Clean up
+sudo umount dtn7
+```
+
 ## Running experiments
 
 This repository is also meant as a plugin for [maci-docker-compose](https://github.com/umr-ds/maci-docker-compose), which creates the MACI environment and allows multiple workers to connect to it.
