@@ -36,3 +36,6 @@ RUN echo 'custom_services_dir = /root/.core/myservices' >> /etc/core/core.conf
 # Install the software
 COPY --from=dtn7-go-builder /dtnd     /usr/local/sbin/
 COPY --from=dtn7-go-builder /dtn-tool /usr/local/sbin/
+
+# Install custom icons
+COPY icons/ /usr/share/core/icons/
