@@ -1,22 +1,22 @@
 from core.service import CoreService, ServiceMode
 
 
-class Dtn7Service(CoreService):
-    name = "DTN7"
+class Dtn7GoService(CoreService):
+    name = "dtn7-go"
 
     group = "DTN"
 
-    executables = ("dtn7d", "dtn7cat", )
+    executables = ("dtnd", "dtn-tool", )
 
-    dependencies = ("bwm-ng", "pidstat")
+    dependencies = ()
 
-    configs = ("dtn7d.toml", )
+    configs = ("dtnd.toml", )
 
     startup = ('bash -c "\
-nohup dtn7d {} &> dtn7d_run.log &\
+nohup dtnd {} &> dtnd_run.log &\
 "'.format(configs[0]), )
 
-    validate = ('bash -c "ps -C dtn7d"', )      # ps -C returns 0 if the process is found, 1 if not.
+    validate = ('bash -c "ps -C dtnd"', )       # ps -C returns 0 if the process is found, 1 if not.
 
     validation_mode = ServiceMode.NON_BLOCKING  # NON_BLOCKING uses the validate commands for validation.
 
@@ -24,19 +24,15 @@ nohup dtn7d {} &> dtn7d_run.log &\
 
     validation_period = 1                       # Retry after 1 second if validation was not successful.
 
-    shutdown = ('bash -c "kill -INT `pgrep dtn7d`"', )
+    shutdown = ('bash -c "kill -INT `pgrep dtnd`"', )
 
     @classmethod
     def generate_config(cls, node, filename):
         return '''
 [core]
 store = "store_{node_name}"
+inspect-all-bundles = true
 node-id = "dtn://{node_name}/"
-
-# [logging]
-# level = "debug"
-# report-caller = false
-# format = "json"
 
 [routing]
 algorithm = "epidemic"
@@ -45,11 +41,13 @@ algorithm = "epidemic"
 ipv4 = true
 interval = 2
 
-[simple-rest]
-node = "dtn://{node_name}/"
-listen = "127.0.0.1:8080"
+[agents]
+[agents.webserver]
+address = "localhost:8080"
+websocket = true
+rest = true
 
 [[listen]]
-protocol = "mtcp"
-endpoint = ":1312"
+protocol = "tcpcl"
+endpoint = ":4556"
         '''.format(node_name=node.name)

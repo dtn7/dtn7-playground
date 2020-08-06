@@ -1,4 +1,4 @@
-# CORE EMU Dockerfile
+# CORE EMU Dockerfile / dtn7-playground
 
 A Dockercontainer to run [CORE](https://github.com/coreemu/core) preconfigured with DTN softwares and the ability to be used as a [MACI](https://github.com/AlexanderFroemmgen/maci) worker.
 
@@ -6,14 +6,17 @@ If CORE complains about missing `ebtables`, your kernel modules might not be ava
 
 ```bash
 # Build the container
-docker-compose build core
+docker-compose build dtn7-playground
+
+# For Linux: Load the ebtables kernel module, if not already loaded
+sudo modprobe ebtables
 
 # Start the container with the available $DISPLAY environment variable..
-docker-compose up core
+docker-compose up dtn7-playground
 
 # ..or a specific one
-DISPLAY=docker.for.mac.localhost:0 docker-compose up core
-DISPLAY=:3 docker-compose up core
+DISPLAY=docker.for.mac.localhost:0 docker-compose up dtn7-playground
+DISPLAY=:3 docker-compose up dtn7-playground
 
 # If your host system uses the X window system (like on a GNU/Linux), you might
 # want to allow local connections.
@@ -25,15 +28,14 @@ xhost -local:root
 
 ## Test local development
 
-If you want to check your latest changes, you might want to bind mount your
-dtn7 directory over the overlay.
+If you want to check your latest changes, you might want to bind mount the `dtn7-go` directory over the overlay.
 
 ```sh
 # Bind mound
-sudo mount --bind /your/dtn7/directory dtn7
+sudo mount --bind /your/dtn7/directory dtn7-go
 
 # Clean up
-sudo umount dtn7
+sudo umount dtn7-go
 ```
 
 ## Running experiments
@@ -67,3 +69,4 @@ DISPLAY= BACKEND=docker.for.mac.localhost docker-compose run core
 
 - <https://github.com/umr-ds/maci-serval_core_worker>
 - <https://github.com/D3f0/coreemu_vnc>
+- <https://github.com/dtn7/adhocnow2019-evaluation>

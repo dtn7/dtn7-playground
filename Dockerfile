@@ -1,10 +1,10 @@
 ### Build dtn7
-FROM golang:1.12 AS dtn7-builder
+FROM golang:1.14 AS dtn7-go-builder
 
-COPY dtn7 /dtn7
-WORKDIR /dtn7
-RUN go build -race -o /dtn7cat ./cmd/dtncat \
-    && go build -race -o /dtn7d ./cmd/dtnd
+COPY dtn7-go /dtn7-go
+WORKDIR /dtn7-go
+RUN go build -race -o /dtnd ./cmd/dtnd \
+    && go build -race -o /dtn-tool ./cmd/dtn-tool
 
 ### Compose the actual worker container
 FROM maciresearch/core_worker:0.4.2
@@ -34,5 +34,5 @@ COPY dotcore /root/.core/
 RUN echo 'custom_services_dir = /root/.core/myservices' >> /etc/core/core.conf
 
 # Install the software
-COPY --from=dtn7-builder /dtn7d   /usr/local/sbin/
-COPY --from=dtn7-builder /dtn7cat /usr/local/sbin/
+COPY --from=dtn7-go-builder /dtnd     /usr/local/sbin/
+COPY --from=dtn7-go-builder /dtn-tool /usr/local/sbin/
