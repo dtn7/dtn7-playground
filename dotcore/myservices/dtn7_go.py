@@ -78,8 +78,8 @@ websocket = true
 rest = true
 
 [[listen]]
-protocol = "tcpcl"
-endpoint = ":4556"
+protocol = "mtcp"
+endpoint = ":4200"
         '''.format(node_name=node.name)
 
 
@@ -113,8 +113,8 @@ websocket = true
 rest = true
 
 [[listen]]
-protocol = "tcpcl"
-endpoint = ":4556"
+protocol = "mtcp"
+endpoint = ":4200"
         '''.format(node_name=node.name)
 
 
@@ -143,6 +143,6 @@ websocket = true
 rest = true
 
 [[listen]]
-protocol = "tcpcl"
-endpoint = ":4556"
+protocol = "mtcp"
+endpoint = ":4200"
         '''.format(node_name=node.name)

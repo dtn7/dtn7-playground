@@ -1,67 +1,87 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<scenario name="/topologies/default.xml">
+<scenario name="/topologies/sensornetwork.xml">
   <networks>
-    <network id="6" name="wlan6" type="WIRELESS_LAN">
-      <position x="481" y="333" lat="47.5746356243" lon="-122.122803155" alt="2.0"/>
+    <network id="8" name="wlan8" type="WIRELESS_LAN">
+      <position x="911" y="48" lat="47.5784158972" lon="-122.114162931" alt="2.0"/>
     </network>
   </networks>
   <devices>
-    <device id="1" name="n1" type="dtnhost">
-      <position x="175" y="632" lat="47.5706470019" lon="-122.12897255" alt="2.0"/>
+    <device id="1" name="n1" type="dtn_sn_server">
+      <position x="961" y="337" lat="47.5745080322" lon="-122.113231584" alt="2.0"/>
       <services>
-        <service name="dtn7-go"/>
+        <service name="dtn7-go-server"/>
       </services>
     </device>
-    <device id="2" name="n2" type="dtnhost">
-      <position x="838" y="683" lat="47.5698575699" lon="-122.115763136" alt="2.0"/>
+    <device id="2" name="n2" type="dtn_sn_sensor">
+      <position x="115" y="36" lat="47.5786993554" lon="-122.130035805" alt="2.0"/>
       <services>
-        <service name="dtn7-go"/>
+        <service name="dtn7-go-sensor"/>
       </services>
     </device>
-    <device id="3" name="n3" type="dtnhost">
-      <position x="704" y="186" lat="47.5765853463" lon="-122.118322631" alt="2.0"/>
+    <device id="3" name="n3" type="dtn_sn_sensor">
+      <position x="81" y="239" lat="47.5759649263" lon="-122.130759257" alt="2.0"/>
       <services>
-        <service name="dtn7-go"/>
+        <service name="dtn7-go-sensor"/>
       </services>
     </device>
-    <device id="4" name="n4" type="dtnhost">
-      <position x="210" y="417" lat="47.5735432156" lon="-122.128226452" alt="2.0"/>
+    <device id="4" name="n4" type="dtn_sn_sensor">
+      <position x="114" y="539" lat="47.5719113087" lon="-122.130168182" alt="2.0"/>
       <services>
-        <service name="dtn7-go"/>
+        <service name="dtn7-go-sensor"/>
       </services>
     </device>
-    <device id="5" name="n5" type="dtnhost">
-      <position x="245" y="148" lat="47.5771681746" lon="-122.127468162" alt="2.0"/>
+    <device id="5" name="n5" type="dtn_sn_sensor">
+      <position x="247" y="673" lat="47.5700827767" lon="-122.127545972" alt="2.0"/>
       <services>
-        <service name="dtn7-go"/>
+        <service name="dtn7-go-sensor"/>
+      </services>
+    </device>
+    <device id="6" name="n6" type="dtn_sn_sensor">
+      <position x="309" y="90" lat="47.577941191" lon="-122.126178742" alt="2.0"/>
+      <services>
+        <service name="dtn7-go-sensor"/>
+      </services>
+    </device>
+    <device id="7" name="n7" type="dtn_sn_mule">
+      <position x="575" y="336" lat="47.5745807856" lon="-122.120929218" alt="2.0"/>
+      <services>
+        <service name="dtn7-go-mule"/>
       </services>
     </device>
   </devices>
   <links>
-    <link node_one="6" node_two="1">
-      <interface_two id="0" name="eth0" mac="00:00:00:aa:00:00" ip4="10.0.0.1" ip4_mask="8" ip6="2001::1" ip6_mask="128"/>
+    <link node_one="8" node_two="1">
+      <interface_two id="0" name="eth0" mac="00:00:00:aa:00:07" ip4="10.0.0.1" ip4_mask="8" ip6="2001::1" ip6_mask="128"/>
       <options type="0" unidirectional="0"/>
     </link>
-    <link node_one="6" node_two="2">
-      <interface_two id="0" name="eth0" mac="00:00:00:aa:00:01" ip4="10.0.0.2" ip4_mask="8" ip6="2001::2" ip6_mask="128"/>
+    <link node_one="8" node_two="2">
+      <interface_two id="0" name="eth0" mac="00:00:00:aa:00:08" ip4="10.0.0.2" ip4_mask="8" ip6="2001::2" ip6_mask="128"/>
       <options type="0" unidirectional="0"/>
     </link>
-    <link node_one="6" node_two="3">
-      <interface_two id="0" name="eth0" mac="00:00:00:aa:00:02" ip4="10.0.0.3" ip4_mask="8" ip6="2001::3" ip6_mask="128"/>
+    <link node_one="8" node_two="3">
+      <interface_two id="0" name="eth0" mac="00:00:00:aa:00:09" ip4="10.0.0.3" ip4_mask="8" ip6="2001::3" ip6_mask="128"/>
       <options type="0" unidirectional="0"/>
     </link>
-    <link node_one="6" node_two="4">
-      <interface_two id="0" name="eth0" mac="00:00:00:aa:00:03" ip4="10.0.0.4" ip4_mask="8" ip6="2001::4" ip6_mask="128"/>
+    <link node_one="8" node_two="4">
+      <interface_two id="0" name="eth0" mac="00:00:00:aa:00:0a" ip4="10.0.0.4" ip4_mask="8" ip6="2001::4" ip6_mask="128"/>
       <options type="0" unidirectional="0"/>
     </link>
-    <link node_one="6" node_two="5">
-      <interface_two id="0" name="eth0" mac="00:00:00:aa:00:04" ip4="10.0.0.5" ip4_mask="8" ip6="2001::5" ip6_mask="128"/>
+    <link node_one="8" node_two="5">
+      <interface_two id="0" name="eth0" mac="00:00:00:aa:00:0b" ip4="10.0.0.5" ip4_mask="8" ip6="2001::5" ip6_mask="128"/>
+      <options type="0" unidirectional="0"/>
+    </link>
+    <link node_one="8" node_two="6">
+      <interface_two id="0" name="eth0" mac="00:00:00:aa:00:0c" ip4="10.0.0.6" ip4_mask="8" ip6="2001::6" ip6_mask="128"/>
+      <options type="0" unidirectional="0"/>
+    </link>
+    <link node_one="8" node_two="7">
+      <interface_two id="0" name="eth0" mac="00:00:00:aa:00:0d" ip4="10.0.0.7" ip4_mask="8" ip6="2001::7" ip6_mask="128"/>
       <options type="0" unidirectional="0"/>
     </link>
   </links>
   <mobility_configurations>
-    <mobility_configuration node="6" model="basic_range">
-      <configuration name="range" value="256"/>
+    <mobility_configuration node="8" model="basic_range">
+      <configuration name="range" value="200"/>
       <configuration name="bandwidth" value="54000000"/>
       <configuration name="jitter" value="0"/>
       <configuration name="delay" value="20000"/>
@@ -74,14 +94,14 @@
     <configuration name="global_options" value="interface_names=no ip_addresses=yes ipv6_addresses=no node_labels=yes link_labels=yes show_api=no background_images=no annotations=yes grid=yes traffic_start=0"/>
   </session_metadata>
   <default_services>
-    <node type="dtnhost">
-      <service name="dtn7-go"/>
-    </node>
     <node type="prouter">
       <service name="zebra"/>
       <service name="OSPFv2"/>
       <service name="OSPFv3"/>
       <service name="IPForward"/>
+    </node>
+    <node type="dtn_sn_sensor">
+      <service name="dtn7-go-sensor"/>
     </node>
     <node type="PC">
       <service name="DefaultRoute"/>
@@ -89,6 +109,9 @@
     <node type="host">
       <service name="DefaultRoute"/>
       <service name="SSH"/>
+    </node>
+    <node type="dtn_sn_server">
+      <service name="dtn7-go-server"/>
     </node>
     <node type="mdr">
       <service name="zebra"/>
@@ -100,6 +123,9 @@
       <service name="OSPFv2"/>
       <service name="OSPFv3"/>
       <service name="IPForward"/>
+    </node>
+    <node type="dtn_sn_mule">
+      <service name="dtn7-go-mule"/>
     </node>
   </default_services>
 </scenario>
