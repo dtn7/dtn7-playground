@@ -14,6 +14,7 @@ RUN apt-get update \
   && apt-get install --no-install-recommends -yq \
     libtk-img \
     lxterminal \
+    tmux \
     wireshark \
   && apt-get clean
 

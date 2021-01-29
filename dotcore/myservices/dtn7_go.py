@@ -129,6 +129,8 @@ ipv4 = true
 interval = 2
 
 [agents]
+ping = "dtn://{node.name}.server.n40/ping"
+
 [agents.webserver]
 address = "localhost:8080"
 websocket = true

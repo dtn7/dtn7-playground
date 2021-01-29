@@ -13,5 +13,5 @@ services:
       - NET_ADMIN
       - SYS_ADMIN
     environment:
-      - CORE_PARAMS=/root/.core/configs/mesh.imn
+      - CORE_PARAMS=/root/.core/configs/test_loss.imn
       - DISPLAY
