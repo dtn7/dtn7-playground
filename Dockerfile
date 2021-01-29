@@ -1,41 +1,26 @@
-### Build dtn7
-FROM golang:1.14 AS dtn7-go-builder
+### Container to build dtn7-go
+FROM golang:1.15 AS dtn7-go-builder
 
 COPY dtn7-go /dtn7-go
 WORKDIR /dtn7-go
 RUN go build -race -o /dtnd ./cmd/dtnd \
-    && go build -race -o /dtn-tool ./cmd/dtn-tool
+  && go build -race -o /dtn-tool ./cmd/dtn-tool
 
-### Compose the actual worker container
-FROM maciresearch/core_worker:0.4.2
 
-# Install further measuring tools
+### CORE Container
+FROM maciresearch/core_worker:7.4.0-1
+
 RUN apt-get update \
-    && apt-get install --no-install-recommends -yq \
-    bwm-ng \
-    sysstat \
-    tcpdump \
-    patch \
-    python-nacl \
-    python-ipcalc \
-    libdaemon-dev \
-    libnl-3-dev \
-    libnl-cli-3-dev \
-    libnl-genl-3-dev \
-    libnl-nf-3-dev \
-    libnl-route-3-dev \
-    libarchive-dev \
-    psmisc \
+  && apt-get install --no-install-recommends -yq \
+    libtk-img \
+    lxterminal \
     wireshark \
-    && apt-get clean
+  && apt-get clean
 
-# Install CORE extensions for the network test
-COPY dotcore /root/.core/
 RUN echo 'custom_services_dir = /root/.core/myservices' >> /etc/core/core.conf
 
-# Install the software
+COPY icons/normal/* /usr/local/share/core/icons/normal/
+COPY icons/tiny/* /usr/local/share/core/icons/tiny/
+
 COPY --from=dtn7-go-builder /dtnd     /usr/local/sbin/
 COPY --from=dtn7-go-builder /dtn-tool /usr/local/sbin/
-
-# Install custom icons
-COPY icons/ /usr/share/core/icons/

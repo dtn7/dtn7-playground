@@ -8,12 +8,10 @@ services:
       - /lib/modules:/lib/modules
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ./dotcore:/root/.core
-      - ./topologies:/topologies
     privileged: true
     cap_add:
       - NET_ADMIN
       - SYS_ADMIN
     environment:
-      - CORE_PARAMS=/topologies/default.xml
+      - CORE_PARAMS=/root/.core/configs/mesh.imn
       - DISPLAY
-      - BACKEND

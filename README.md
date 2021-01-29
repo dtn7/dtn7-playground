@@ -6,13 +6,13 @@ If CORE complains about missing `ebtables`, your kernel modules might not be ava
 
 ```bash
 # Build the container
-docker-compose build dtn7-playground
+docker-compose build
 
 # For Linux: Load the ebtables kernel module, if not already loaded
 sudo modprobe ebtables
 
 # Start the container with the available $DISPLAY environment variable..
-docker-compose up dtn7-playground
+docker-compose up
 
 # ..or a specific one
 DISPLAY=docker.for.mac.localhost:0 docker-compose up dtn7-playground
