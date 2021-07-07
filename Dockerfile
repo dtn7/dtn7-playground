@@ -1,27 +1,72 @@
-### Container to build dtn7-go
-FROM golang:1.15 AS dtn7-go-builder
+### Build dtnd & dtncat
+FROM golang:1.16.2 AS dtn7-builder
 
-COPY dtn7-go /dtn7-go
 WORKDIR /dtn7-go
-RUN go build -race -o /dtnd ./cmd/dtnd \
-  && go build -race -o /dtn-tool ./cmd/dtn-tool
+RUN go build ./cmd/dtn-tool
+RUN go build ./cmd/dtnd
 
+FROM ubuntu:20.04
 
-### CORE Container
-FROM maciresearch/core_worker:7.4.0-1
+ARG CORE_TAG=release-7.5.1
 
+LABEL maintainer="sterz@informatik.uni-marburg.de"
+LABEL name="dtn7/dtn7-go_core-tests"
+LABEL url="https://github.com/dtn7/dtn7-go_core-tests"
+LABEL version="${CORE_TAG}-1"
+
+ENV DEBIAN_FRONTEND noninteractive
+
+# update system, install wget and python
 RUN apt-get update \
-  && apt-get install --no-install-recommends -yq \
-    libtk-img \
-    lxterminal \
-    tmux \
-    wireshark \
-  && apt-get clean
+    && apt-get dist-upgrade -y \
+    && apt-get install -y wget python3-pip \
+    && apt-get clean
 
-RUN echo 'custom_services_dir = /root/.core/myservices' >> /etc/core/core.conf
+RUN wget --quiet https://github.com/coreemu/core/archive/${CORE_TAG}.tar.gz \
+    && mkdir core \
+    && tar xf ${CORE_TAG}.tar.gz \
+    && mv /core-${CORE_TAG} /usr/local/share/core
 
-COPY icons/normal/* /usr/local/share/core/icons/normal/
-COPY icons/tiny/* /usr/local/share/core/icons/tiny/
+WORKDIR "/usr/local/share/core"
 
-COPY --from=dtn7-go-builder /dtnd     /usr/local/sbin/
-COPY --from=dtn7-go-builder /dtn-tool /usr/local/sbin/
+# Install CORE similar to core's tasks.py file
+RUN apt-get update \
+    && apt-get install -y \
+    automake \
+    pkg-config \
+    gcc \
+    libev-dev \
+    ebtables \
+    iproute2 \
+    ethtool \
+    tk \
+    python3-tk \
+    bash \
+    && apt-get clean
+
+RUN python3 -m pip install --user \
+    grpcio==1.27.2 \
+    grpcio-tools==1.27.2 \
+    requests
+
+RUN ./bootstrap.sh
+RUN ./configure --prefix="/usr/local"
+RUN make -j$(nproc)
+RUN make install
+
+WORKDIR "/usr/local/share/core/daemon"
+RUN python3 -m pip install .
+
+RUN cp scripts/* "/usr/local/bin"
+RUN mkdir -p /etc/core
+RUN cp data/* /etc/core
+
+RUN echo "custom_services_dir = /root/.core/myservices" >> /etc/core/core.conf
+
+# install core-dtn7 integration
+COPY --from=dtn7-builder /dtn7-go/dtn-tool /usr/local/sbin/dtn-tool
+COPY --from=dtn7-builder /dtn7-go/dtnd /usr/local/sbin/dtnd
+
+ADD entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]

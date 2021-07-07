@@ -1,17 +1,17 @@
 version: "3"
 services:
-  dtn7-playground:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    volumes:
-      - /lib/modules:/lib/modules
-      - /tmp/.X11-unix:/tmp/.X11-unix
-      - ./dotcore:/root/.core
-    privileged: true
-    cap_add:
-      - NET_ADMIN
-      - SYS_ADMIN
-    environment:
-      - CORE_PARAMS=/root/.core/configs/test_loss.imn
-      - DISPLAY
+    core:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        volumes:
+            - ./dotcore:/root/.core
+            - ./utils:/utils
+            - ./experiment.py:/root/experiment.py
+            - ./results:/results
+            - ./_actions:/dtn7-go
+        privileged: true
+        env_file:
+            - experiment_settings.env
+        environment:
+            - DISPLAY

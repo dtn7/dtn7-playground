@@ -1,72 +1,70 @@
 # CORE EMU Dockerfile / dtn7-playground
+A Dockercontainer to run [CORE](https://github.com/coreemu/core) preconfigured
+with DTN7-Go for extendet CI tests if DTN7-Go.
 
-A Dockercontainer to run [CORE](https://github.com/coreemu/core) preconfigured with DTN softwares and the ability to be used as a [MACI](https://github.com/AlexanderFroemmgen/maci) worker.
+## Requirements
+If CORE complains about missing `ebtables`, your kernel modules might not be
+available inside the container. To fix this issue, execute `modprobe ebtables`
+on your host and restart the container.
 
-If CORE complains about missing `ebtables`, your kernel modules might not be available inside the container. To fix this issue, execute `modprobe ebtables` on your host and restart the container.
+## Local development
+This container has two modes: GUI based and headless. For local development, it
+makes sense to run the GUI version, but it is also possible to start the
+execution of the test headless.
+
+### General
+First you have to build the container.
 
 ```bash
-# Build the container
 docker-compose build
-
-# For Linux: Load the ebtables kernel module, if not already loaded
-sudo modprobe ebtables
-
-# Start the container with the available $DISPLAY environment variable..
-docker-compose up
-
-# ..or a specific one
-DISPLAY=docker.for.mac.localhost:0 docker-compose up dtn7-playground
-DISPLAY=:3 docker-compose up dtn7-playground
-
-# If your host system uses the X window system (like on a GNU/Linux), you might
-# want to allow local connections.
-# Enable those _before_ starting the container:
-xhost +local:root
-# And disable those again:
-xhost -local:root
 ```
 
-## Test local development
+After that, you have to checkout DTN7-Go locally, as the container expects the
+folder structure to be the same as during automatic exection using Github
+Actions:
 
-If you want to check your latest changes, you might want to bind mount the `dtn7-go` directory over the overlay.
-
-```sh
-# Bind mound
-sudo mount --bind /your/dtn7/directory dtn7-go
-
-# Clean up
-sudo umount dtn7-go
+```
+git clone git@github.com:dtn7/dtn7-go.git _actions
 ```
 
-## Running experiments
+### GUI
+To start the container in GUI mode, you have to set the DISPLAY variable as an
+environment variable. This can be done during the startup process. You also may
+want to allow local X connections before on Linux with `xhost +local:root` and
+disable afterwards with `xhost -local:root`
 
-This repository is also meant as a plugin for [maci-docker-compose](https://github.com/umr-ds/maci-docker-compose), which creates the MACI environment and allows multiple workers to connect to it.
-
-```sh
-# clone maci-docker-compose
-git clone --recursive https://github.com/umr-ds/maci-docker-compose
-
-# remove the default maci_data folder
-cd maci-docker-compose
-rm -rf maci_data
-
-# clone the evaluation repository
-git clone https://github.com/dtn7/networkeval maci_data
-
-# start the MACI backend
-docker-compose up -d
-
-# run a local worker, to connect to the local MACI backend
-cd maci_data
-DISPLAY= BACKEND=localhost docker-compose run core
-
-# The MACI backend is running on http://localhost:63658
-# Running docker on macOS, it can be tricky to connect the worker to the backend, therefore the hostname docker.for.mac.localhost can be used
-DISPLAY= BACKEND=docker.for.mac.localhost docker-compose run core
+```bash
+# Linux
+DISPLAY=:3 docker-compose up
+# macOS
+DISPLAY=docker.for.mac.localhost:0 docker-compose up
 ```
 
-## Related Work
+This will start up the CORE GUI. You can now fiddle around, test various things
+and run multiple emulated virtual nodes.
 
+### Headless
+When the container is executed headless with the following command, the tests
+will be started automatically.
+
+```bash
+# Linux
+DISPLAY= docker-compose up
+```
+
+The results of the experiment will be stored in the `results` folder.
+
+#### Configuration
+The experiments require three parameters: the size of the payloads to be sent,
+how many bundles should be sent per node and how long the experiment should be
+executed. These parameters are set in the `experiment_settings.env` file and
+will set the parameters as environment variables in the Docker container.
+
+## Github Actions execution
+As this setup is meant to be used for extended Github Actions tests, the entire
+setup is done in the main DTN7-Go repository.
+
+## See also
 - <https://github.com/umr-ds/maci-serval_core_worker>
 - <https://github.com/D3f0/coreemu_vnc>
 - <https://github.com/dtn7/adhocnow2019-evaluation>

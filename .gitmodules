@@ -1,3 +1,0 @@
-[submodule "dtn7"]
-	path = dtn7-go
-	url = https://github.com/dtn7/dtn7-go.git
