@@ -40,6 +40,7 @@ RUN apt-get update \
     ethtool \
     tk \
     python3-tk \
+    psmisc \
     bash \
     && apt-get clean
 
