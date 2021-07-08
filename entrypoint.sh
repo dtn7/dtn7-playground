@@ -17,5 +17,5 @@ if [ ! -z "$DISPLAY" ]; then
     wait $CORE_GUI_PID
 else
     echo "# Starting execution of test."
-    python3 /root/experiment.py
+    python3 /root/src/experiment.py
 fi

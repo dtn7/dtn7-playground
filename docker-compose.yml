@@ -7,7 +7,7 @@ services:
         volumes:
             - ./dotcore:/root/.core
             - ./utils:/utils
-            - ./experiment.py:/root/experiment.py
+            - ./src:/root/src
             - ./results:/results
         privileged: true
         env_file:
