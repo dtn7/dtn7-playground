@@ -19,14 +19,6 @@ First you have to build the container.
 docker-compose build
 ```
 
-After that, you have to checkout DTN7-Go locally, as the container expects the
-folder structure to be the same as during automatic exection using Github
-Actions:
-
-```
-git clone git@github.com:dtn7/dtn7-go.git _actions
-```
-
 ### GUI
 To start the container in GUI mode, you have to set the DISPLAY variable as an
 environment variable. This can be done during the startup process. You also may

@@ -9,7 +9,6 @@ services:
             - ./utils:/utils
             - ./experiment.py:/root/experiment.py
             - ./results:/results
-            - ./_actions:/dtn7-go
         privileged: true
         env_file:
             - experiment_settings.env
