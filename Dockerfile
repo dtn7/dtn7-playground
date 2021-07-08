@@ -1,9 +1,10 @@
 ### Build dtnd & dtncat
 FROM golang:1.16.2 AS dtn7-builder
 
-WORKDIR /dtn7-go
-RUN go build ./cmd/dtn-tool
-RUN go build ./cmd/dtnd
+RUN git clone https://github.com/dtn7/dtn7-go.git /dtn7-go
+RUN cd /dtn7-go \
+    && go build ./cmd/dtn-tool \
+    && go build ./cmd/dtnd
 
 FROM ubuntu:20.04
 
@@ -27,8 +28,6 @@ RUN wget --quiet https://github.com/coreemu/core/archive/${CORE_TAG}.tar.gz \
     && tar xf ${CORE_TAG}.tar.gz \
     && mv /core-${CORE_TAG} /usr/local/share/core
 
-WORKDIR "/usr/local/share/core"
-
 # Install CORE similar to core's tasks.py file
 RUN apt-get update \
     && apt-get install -y \
@@ -49,17 +48,17 @@ RUN python3 -m pip install --user \
     grpcio-tools==1.27.2 \
     requests
 
-RUN ./bootstrap.sh
-RUN ./configure --prefix="/usr/local"
-RUN make -j$(nproc)
-RUN make install
+RUN cd /usr/local/share/core \
+    && ./bootstrap.sh \
+    && ./configure --prefix="/usr/local" \
+    && make -j$(nproc) \
+    && make install
 
-WORKDIR "/usr/local/share/core/daemon"
-RUN python3 -m pip install .
-
-RUN cp scripts/* "/usr/local/bin"
-RUN mkdir -p /etc/core
-RUN cp data/* /etc/core
+RUN cd /usr/local/share/core/daemon \
+    && python3 -m pip install . \
+    && cp scripts/* "/usr/local/bin" \
+    && mkdir -p /etc/core \
+    && cp data/* /etc/core
 
 RUN echo "custom_services_dir = /root/.core/myservices" >> /etc/core/core.conf
 
