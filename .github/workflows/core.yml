@@ -1,0 +1,51 @@
+# SPDX-FileCopyrightText: 2021 Jonas Höchst
+# SPDX-FileCopyrightText: 2021 Artur Sterz
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+name: Nightly Core Experiments
+
+on: [push, pull_request]
+
+jobs:
+  core:
+    name: Run CORE experiments
+
+    runs-on: ubuntu-latest
+    container: 
+      image: maciresearch/core_worker:7.5.1-1
+      options: --privileged
+
+    steps:
+    - name: Install additional dependencies
+      run: |
+        apt-get update
+        apt-get install -y nodejs
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: '^1.16'
+
+    - name: Check out code
+      uses: actions/checkout@v2
+      with: 
+        submodules: recursive
+
+    - name: Build and Install
+      run: |
+        cd dtn7-go
+        go build ./cmd/dtn-tool
+        install dtn-tool /usr/local/bin/
+        go build ./cmd/dtnd
+        install dtnd /usr/local/bin
+
+
+    - name: Link .core files
+      run: |
+        ln -s $PWD/dotcore /root/.core
+        ls -la /root/.core/
+
+    - name: Run experiment
+      run: |
+        python3 /root/.core/experiments/scenario.py
