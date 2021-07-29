@@ -25,3 +25,5 @@ COPY icons/tiny/* /usr/local/share/core/icons/tiny/
 
 COPY --from=dtn7-go-builder /dtnd     /usr/local/sbin/
 COPY --from=dtn7-go-builder /dtn-tool /usr/local/sbin/
+
+ENV PATH="/root/bin:${PATH}"

@@ -41,10 +41,10 @@ jobs:
         install dtnd /usr/local/bin
 
 
-    - name: Link .core files
+    - name: Link files
       run: |
         ln -s $PWD/dotcore /root/.core
-        ls -la /root/.core/
+        echo "$PWD/bin" >> $GITHUB_PATH
 
     - name: Run experiment
       run: |

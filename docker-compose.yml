@@ -8,6 +8,7 @@ services:
       - /lib/modules:/lib/modules
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ./dotcore:/root/.core
+      - ./bin:/root/bin
     privileged: true
     cap_add:
       - NET_ADMIN
