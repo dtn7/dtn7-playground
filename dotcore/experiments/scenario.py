@@ -15,17 +15,16 @@ from core.services import ServiceManager
 
 
 def collect_logs(session_dir):
-    now = datetime.now()
-    now_formatted = now.strftime("%Y%m%d_%H%M%S")
+    exclude = [r"store_.*", r"var.run", r"var.log"]
 
-    node_logs_to_collect = ["dtnd.log", "dtnd.toml"]
-
-    with tarfile.open(f"/tmp/{now_formatted}.tar.gz", "w:gz") as tar:
+    with tarfile.open(f"/tmp/results.tar.gz", "w:gz") as tar:
         for node_dir in glob.glob(f"{session_dir}/*.conf"):
-            for log in node_logs_to_collect:
-                abs_log_path = f"{node_dir}/{log}"
-                rel_log_path = abs_log_path.replace(f"{session_dir}/", "")
-                tar.add(abs_log_path, arcname=rel_log_path)
+            for f in glob.glob(f"{node_dir}/*"):
+                if any(regex.match(f) for regex in exclude):
+                    continue
+
+                rel_path = f.replace(f"{session_dir}/", "")
+                tar.add(f, arcname=rel_path)
 
 
 if __name__ in ["__main__", "__builtin__"]:

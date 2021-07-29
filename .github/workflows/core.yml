@@ -22,12 +22,12 @@ jobs:
         apt-get update
         apt-get install -y nodejs psmisc git
 
-    - name: Set up Go
+    - name: Setup Go
       uses: actions/setup-go@v2
       with:
         go-version: '^1.16'
 
-    - name: Check out code
+    - name: Checkout
       uses: actions/checkout@v2.3.4
       with: 
         submodules: recursive
@@ -49,3 +49,10 @@ jobs:
     - name: Run experiment
       run: |
         python3 /root/.core/experiments/scenario.py
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: logfiles
+        path: |
+          /tmp/results.tar.gz
