@@ -14,27 +14,33 @@ from core.services import ServiceManager
 
 def collect_logs(session_dir, dest_dir="/tmp/results"):
     exclude = [r"store_.*", r"var.run", r"var.log"]
+    os.makedirs(dest_dir, exist_ok=True)
 
     for node_dir in glob.glob(f"{session_dir}/*.conf"):
         _, node_name = os.path.split(node_dir)
+        node_dest = os.path.join(dest_dir, node_name)
+        os.makedirs(node_dest, exist_ok=True)
 
-        for filepath in glob.glob(f"{node_dir}/*"):
-            path, name = os.path.split(filepath)
+        for content_path in glob.glob(f"{node_dir}/*"):
+            _, content_name = os.path.split(content_path)
 
-            if any(re.match(regex, name) for regex in exclude):
-                logging.info(f"removing {filepath}")
-                shutil.rmtree(filepath)
+            if any(re.match(regex, content_name) for regex in exclude):
+                logging.info(f"skipping {content_path}")
+                continue
+
+            logging.info(f"copying {content_path}")
+            content_dest = os.path.join(node_dest, content_name)
+            if os.path.isdir(content_path):
+                shutil.copytree(content_path, content_dest)
             else:
-                logging.info(f"keeping {filepath}")
-
-    shutil.move(session_dir, dest_dir)
+                shutil.copy(content_path, content_dest)
 
 
 if __name__ in ["__main__", "__builtin__"]:
     logging.basicConfig(level=logging.DEBUG, force=True)
 
     logging.info("Gathering experiment settings.")
-    runtime = int(60)
+    runtime = int(5)
 
     logging.info("Setting up CORE.")
     coreemu = CoreEmu()
