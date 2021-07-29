@@ -2,29 +2,32 @@
 
 import os
 import time
-import tarfile
+import shutil
 import glob
 import logging
-
-
-from datetime import datetime
+import re
 
 from core.emulator.coreemu import CoreEmu
 from core.emulator.enumerations import EventTypes
 from core.services import ServiceManager
 
 
-def collect_logs(session_dir):
+def collect_logs(session_dir, dest_dir="/tmp/results"):
     exclude = [r"store_.*", r"var.run", r"var.log"]
 
-    with tarfile.open(f"/tmp/results.tar.gz", "w:gz") as tar:
-        for node_dir in glob.glob(f"{session_dir}/*.conf"):
-            for f in glob.glob(f"{node_dir}/*"):
-                if any(regex.match(f) for regex in exclude):
-                    continue
+    for node_dir in glob.glob(f"{session_dir}/*.conf"):
+        _, node_name = os.path.split(node_dir)
 
-                rel_path = f.replace(f"{session_dir}/", "")
-                tar.add(f, arcname=rel_path)
+        for filepath in glob.glob(f"{node_dir}/*"):
+            path, name = os.path.split(filepath)
+
+            if any(re.match(regex, name) for regex in exclude):
+                logging.info(f"removing {filepath}")
+                shutil.rmtree(filepath)
+            else:
+                logging.info(f"keeping {filepath}")
+
+    shutil.move(session_dir, dest_dir)
 
 
 if __name__ in ["__main__", "__builtin__"]:

@@ -55,4 +55,4 @@ jobs:
       with:
         name: logfiles
         path: |
-          /tmp/results.tar.gz
+          /tmp/results/
