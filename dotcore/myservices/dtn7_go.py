@@ -7,7 +7,10 @@ from core.services.coreservices import CoreService, ServiceMode
 class Dtn7GoService(CoreService):
     name: str = "dtn7-go"
     group: str = "DTN"
-    executables: Tuple[str, ...] = ("dtnd", "dtn-tool",)
+    executables: Tuple[str, ...] = (
+        "dtnd",
+        "dtn-tool",
+    )
     dependencies: Tuple[str, ...] = ()
     dirs: Tuple[str, ...] = ()
     configs: Tuple[str, ...] = ("dtnd.toml",)
@@ -16,21 +19,24 @@ class Dtn7GoService(CoreService):
     validation_mode: ServiceMode = ServiceMode.NON_BLOCKING
     validation_timer: int = 1
     validation_period: float = 0.5
-    shutdown: Tuple[str, ...] = ("pkll dtnd",)
+    shutdown: Tuple[str, ...] = ("pkill dtnd",)
 
     @classmethod
     def generate_config(cls, node: CoreNode, filename: str) -> str:
-        return f'''
+        return f"""
 [core]
 store = "store_{node.name}"
-inspect-all-bundles = true
 node-id = "dtn://{node.name}/"
+inspect-all-bundles = true
 
-[routing]
-algorithm = "epidemic"
+[logging]
+level = "debug"
+report-caller = false
+format = "text"
 
 [discovery]
 ipv4 = true
+ipv6 = false
 interval = 2
 
 [agents]
@@ -40,9 +46,11 @@ websocket = true
 rest = true
 
 [[listen]]
-protocol = "tcpcl"
+protocol = "mtcp"
 endpoint = ":4556"
-        '''
+[routing]
+algorithm = "epidemic"
+"""
 
 
 class Dtn7GoSNSensorService(Dtn7GoService):
@@ -50,7 +58,7 @@ class Dtn7GoSNSensorService(Dtn7GoService):
 
     @classmethod
     def generate_config(cls, node: CoreNode, filename: str) -> str:
-        return f'''
+        return f"""
 [core]
 store = "store_{node.name}"
 inspect-all-bundles = true
@@ -72,7 +80,7 @@ rest = true
 [[listen]]
 protocol = "mtcp"
 endpoint = ":4200"
-        '''
+        """
 
 
 class Dtn7GoSNMuleService(Dtn7GoService):
@@ -80,7 +88,7 @@ class Dtn7GoSNMuleService(Dtn7GoService):
 
     @classmethod
     def generate_config(cls, node: CoreNode, filename: str) -> str:
-        return f'''
+        return f"""
 [core]
 store = "store_{node.name}"
 inspect-all-bundles = true
@@ -107,15 +115,15 @@ rest = true
 [[listen]]
 protocol = "mtcp"
 endpoint = ":4200"
-        '''
+        """
 
 
 class Dtn7GoSNServerService(Dtn7GoService):
-    name:str = "dtn7-go-server"
+    name: str = "dtn7-go-server"
 
     @classmethod
     def generate_config(cls, node: CoreNode, filename: str) -> str:
-        return f'''
+        return f"""
 [core]
 store = "store_{node.name}"
 inspect-all-bundles = true
@@ -139,4 +147,4 @@ rest = true
 [[listen]]
 protocol = "mtcp"
 endpoint = ":4200"
-        '''
+        """
