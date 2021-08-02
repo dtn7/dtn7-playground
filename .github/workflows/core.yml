@@ -12,7 +12,13 @@ jobs:
     name: Run CORE experiments
 
     runs-on: ubuntu-latest
-    container: 
+    strategy:
+      fail-fast: false
+      matrix:
+        runtime: [60, 600]
+        bundles_per_node: [1, 600]
+        payload_size: [1000, 1000000]
+    container:
       image: maciresearch/core_worker:7.5.1-1
       options: --privileged
       volumes:
@@ -31,7 +37,7 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@v2.3.4
-      with: 
+      with:
         submodules: recursive
 
     - name: Build and Install
@@ -49,6 +55,10 @@ jobs:
         echo "$PWD/bin" >> $GITHUB_PATH
 
     - name: Run experiment
+      env:
+        EXPERIMENT_RUNTIME: ${{ matrix.runtime }}
+        BUNDLES_PER_NODE: ${{ matrix.bundles_per_node }}
+        PAYLOAD_SIZE: ${{ matrix.payload_size }}
       run: |
         python3 /root/.core/experiments/scenario.py
 
