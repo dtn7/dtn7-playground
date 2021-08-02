@@ -6,6 +6,7 @@ import shutil
 import glob
 import logging
 import re
+import sys
 
 from datetime import datetime
 
@@ -18,7 +19,7 @@ def collect_logs(session_dir, runtime, bpn, payload, dest_dir="/tmp/results"):
     exclude = [r"store_.*", r"var.run", r"var.log"]
     os.makedirs(dest_dir, exist_ok=True)
 
-    with open("experiment.conf", "w") as conf_file:
+    with open(f"{dest_dir}/experiment.conf", "w") as conf_file:
         conf_file.write(
             f"runtime: {runtime}\bundles per node: {bpn}\payload size: {payload}\n"
         )
@@ -41,6 +42,15 @@ def collect_logs(session_dir, runtime, bpn, payload, dest_dir="/tmp/results"):
                 shutil.copytree(content_path, content_dest)
             else:
                 shutil.copy(content_path, content_dest)
+
+
+def check_success(session_dir):
+    for node_dir in glob.glob(f"{session_dir}/*.conf"):
+        with open(f"{node_dir}/traffic_generator_run.log", "r") as log_file:
+            if "Sending caused timeout" in log_file.read():
+                return 1
+
+    return 0
 
 
 if __name__ in ["__main__", "__builtin__"]:
@@ -67,6 +77,8 @@ if __name__ in ["__main__", "__builtin__"]:
     logging.info("Collecting logs.")
     session.set_state(EventTypes.DATACOLLECT_STATE)
 
+    return_code = check_success(session.session_dir)
+
     now = datetime.now().strftime("%Y%m%d_%H%M%S")
     log_dest_dir = f"/tmp/results/{now}"
     collect_logs(session.session_dir, runtime, bpn, payload, dest_dir=log_dest_dir)
@@ -76,3 +88,8 @@ if __name__ in ["__main__", "__builtin__"]:
     os.system("core-cleanup")
 
     logging.info("Experiment finished.")
+
+    if return_code != 0:
+        logging.error("Experiment due to timeout.")
+
+    sys.exit(return_code)
