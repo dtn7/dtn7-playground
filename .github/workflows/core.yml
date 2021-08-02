@@ -62,7 +62,7 @@ jobs:
         BUNDLES_PER_NODE: ${{ matrix.bundles_per_node }}
         PAYLOAD_SIZE: ${{ matrix.payload_size }}
       run: |
-        python3 /root/.core/experiments/scenario.py
+        python3 /root/.core/experiments/deadlock.py
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2

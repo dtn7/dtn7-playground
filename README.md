@@ -1,72 +1,34 @@
-# CORE EMU Dockerfile / dtn7-playground
+# Github Actions test framework for DTN7-Go
 
-A Dockercontainer to run [CORE](https://github.com/coreemu/core) preconfigured with DTN softwares and the ability to be used as a [MACI](https://github.com/AlexanderFroemmgen/maci) worker.
+This branch aims to give a framework for extended DTN7-Go testing using the
+[CORE emulator](http://github.com/coreemu/core) and Github Actions.
 
-If CORE complains about missing `ebtables`, your kernel modules might not be available inside the container. To fix this issue, execute `modprobe ebtables` on your host and restart the container.
+### Structure
+The `dotcore` folder holds all configurations required for CORE.
+`dotcore/configs` holds all XML and IMN files to describe a scenario.
+`dotcore/myservice` contains the service for starting a DTN7-Go node together
+with a traffic generator, i.e., a small program to generate and send bundles
+periodically. `dotcore/experiments` holds the experiment Python script for a
+particular experiment. The `bin` folder holds the traffic generator itself,
+which is started by the traffic generator CORE service. Finally,
+`.github/workflows` defines the experiments and step to be executed for a given
+experiment.
 
-```bash
-# Build the container
-docker-compose build
+### How to install own tests
+To install a new experiment, you have to define a scenario using Cores XML
+export and place it using a meaningful name in the `dotcore/configs` folder.
+After that, write your experiment using Cores Python API and store it with a
+meaningful name in `dotcore/experiments`. If you have to use custom Core
+Services, you have to write them yourself and place them accordingly in the
+`dotcore/myservices` folder. Finally, define the steps for the test either in a
+new workflow YAML file or in the existing on a as new job and place it in the
+`.github/workflow` folder.
 
-# For Linux: Load the ebtables kernel module, if not already loaded
-sudo modprobe ebtables
-
-# Start the container with the available $DISPLAY environment variable..
-docker-compose up
-
-# ..or a specific one
-DISPLAY=docker.for.mac.localhost:0 docker-compose up dtn7-playground
-DISPLAY=:3 docker-compose up dtn7-playground
-
-# If your host system uses the X window system (like on a GNU/Linux), you might
-# want to allow local connections.
-# Enable those _before_ starting the container:
-xhost +local:root
-# And disable those again:
-xhost -local:root
-```
-
-## Test local development
-
-If you want to check your latest changes, you might want to bind mount the `dtn7-go` directory over the overlay.
-
-```sh
-# Bind mound
-sudo mount --bind /your/dtn7/directory dtn7-go
-
-# Clean up
-sudo umount dtn7-go
-```
-
-## Running experiments
-
-This repository is also meant as a plugin for [maci-docker-compose](https://github.com/umr-ds/maci-docker-compose), which creates the MACI environment and allows multiple workers to connect to it.
-
-```sh
-# clone maci-docker-compose
-git clone --recursive https://github.com/umr-ds/maci-docker-compose
-
-# remove the default maci_data folder
-cd maci-docker-compose
-rm -rf maci_data
-
-# clone the evaluation repository
-git clone https://github.com/dtn7/networkeval maci_data
-
-# start the MACI backend
-docker-compose up -d
-
-# run a local worker, to connect to the local MACI backend
-cd maci_data
-DISPLAY= BACKEND=localhost docker-compose run core
-
-# The MACI backend is running on http://localhost:63658
-# Running docker on macOS, it can be tricky to connect the worker to the backend, therefore the hostname docker.for.mac.localhost can be used
-DISPLAY= BACKEND=docker.for.mac.localhost docker-compose run core
-```
-
-## Related Work
-
-- <https://github.com/umr-ds/maci-serval_core_worker>
-- <https://github.com/D3f0/coreemu_vnc>
-- <https://github.com/dtn7/adhocnow2019-evaluation>
+### Existing Experiments
+DTN7-Go tends to deadlock after some time, making it impossible to send any
+bundles. Therefore, the `Run CORE experiments` jobs defines 30 CORE nodes that
+are more or less connected randomly and sending a different number of files with
+various sizes over a time period. The main experiment script is the
+`dotcore/experiments/deadlock.py` Python file, which starts the
+`dotcore/configs/deadlock.xml` scenario. The corresponding Github Workflow is
+called `Deadlock Experiment Testing` in the `.github/workflows/core.yml` file.
