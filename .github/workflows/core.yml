@@ -3,7 +3,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-name: Nightly Core Experiments
+name: Deadlock Experiment Testing
 
 on: [push, pull_request]
 
@@ -35,12 +35,12 @@ jobs:
       with:
         go-version: '^1.16'
 
-    - name: Checkout
+    - name: Checkout repo with submodules
       uses: actions/checkout@v2.3.4
       with:
         submodules: recursive
 
-    - name: Build and Install
+    - name: Build and Install dtn7
       run: |
         cd dtn7-go
         go build ./cmd/dtn-tool
@@ -49,12 +49,13 @@ jobs:
         install dtnd /usr/local/bin
 
 
-    - name: Link files
+    - name: Link dotcore and bin files
       run: |
         ln -s $PWD/dotcore /root/.core
         echo "$PWD/bin" >> $GITHUB_PATH
 
     - name: Run experiment
+      id: experiment
       continue-on-error: true
       env:
         EXPERIMENT_RUNTIME: ${{ matrix.runtime }}
@@ -69,3 +70,7 @@ jobs:
         name: logfiles
         path: |
           /tmp/results/
+
+    - name: Check failures
+      if: steps.experiment.outcome != 'success'
+      run: exit 1
