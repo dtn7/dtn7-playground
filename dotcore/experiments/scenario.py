@@ -40,7 +40,7 @@ if __name__ in ["__main__", "__builtin__"]:
     logging.basicConfig(level=logging.DEBUG, force=True)
 
     logging.info("Gathering experiment settings.")
-    runtime = os.environ.get("EXPERIMENT_RUNTIME", 60)
+    runtime = int(os.environ.get("EXPERIMENT_RUNTIME", 60))
 
     logging.info("Setting up CORE.")
     coreemu = CoreEmu()
