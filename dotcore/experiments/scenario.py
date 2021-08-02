@@ -7,14 +7,21 @@ import glob
 import logging
 import re
 
+from datetime import datetime
+
 from core.emulator.coreemu import CoreEmu
 from core.emulator.enumerations import EventTypes
 from core.services import ServiceManager
 
 
-def collect_logs(session_dir, dest_dir="/tmp/results"):
+def collect_logs(session_dir, runtime, bpn, payload, dest_dir="/tmp/results"):
     exclude = [r"store_.*", r"var.run", r"var.log"]
     os.makedirs(dest_dir, exist_ok=True)
+
+    with open("experiment.conf", "w") as conf_file:
+        conf_file.write(
+            f"runtime: {runtime}\bundles per node: {bpn}\payload size: {payload}\n"
+        )
 
     for node_dir in glob.glob(f"{session_dir}/*.conf"):
         _, node_name = os.path.split(node_dir)
@@ -41,6 +48,8 @@ if __name__ in ["__main__", "__builtin__"]:
 
     logging.info("Gathering experiment settings.")
     runtime = int(os.environ.get("EXPERIMENT_RUNTIME", 60))
+    bpn = int(os.environ.get("BUNDLES_PER_NODE", 6))
+    payload = int(os.environ.get("PAYLOAD_SIZE", 1024))
 
     logging.info("Setting up CORE.")
     coreemu = CoreEmu()
@@ -57,7 +66,10 @@ if __name__ in ["__main__", "__builtin__"]:
 
     logging.info("Collecting logs.")
     session.set_state(EventTypes.DATACOLLECT_STATE)
-    collect_logs(session.session_dir)
+
+    now = datetime.now().strftime("%Y%m%d_%H%M%S")
+    log_dest_dir = f"/tmp/results/{now}"
+    collect_logs(session.session_dir, runtime, bpn, payload, dest_dir=log_dest_dir)
 
     logging.info("Shutting down CORE.")
     coreemu.shutdown()
