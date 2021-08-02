@@ -55,6 +55,7 @@ jobs:
         echo "$PWD/bin" >> $GITHUB_PATH
 
     - name: Run experiment
+      continue-on-error: true
       env:
         EXPERIMENT_RUNTIME: ${{ matrix.runtime }}
         BUNDLES_PER_NODE: ${{ matrix.bundles_per_node }}

@@ -21,7 +21,7 @@ def collect_logs(session_dir, runtime, bpn, payload, dest_dir="/tmp/results"):
 
     with open(f"{dest_dir}/experiment.conf", "w") as conf_file:
         conf_file.write(
-            f"runtime: {runtime}\bundles per node: {bpn}\payload size: {payload}\n"
+            f"runtime: {runtime}\nbundles per node: {bpn}\npayload size: {payload}\n"
         )
 
     for node_dir in glob.glob(f"{session_dir}/*.conf"):
@@ -74,11 +74,12 @@ if __name__ in ["__main__", "__builtin__"]:
     logging.info(f"Experiment is running for {runtime} seconds.")
     time.sleep(runtime)
 
-    logging.info("Collecting logs.")
     session.set_state(EventTypes.DATACOLLECT_STATE)
 
+    logging.info("Checking logs if something went wrong.")
     return_code = check_success(session.session_dir)
 
+    logging.info("Collecting logs.")
     now = datetime.now().strftime("%Y%m%d_%H%M%S")
     log_dest_dir = f"/tmp/results/{now}"
     collect_logs(session.session_dir, runtime, bpn, payload, dest_dir=log_dest_dir)
@@ -90,6 +91,6 @@ if __name__ in ["__main__", "__builtin__"]:
     logging.info("Experiment finished.")
 
     if return_code != 0:
-        logging.error("Experiment due to timeout.")
+        logging.error("Experiment failed due to timeout.")
 
     sys.exit(return_code)
