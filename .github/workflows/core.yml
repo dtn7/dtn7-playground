@@ -43,11 +43,11 @@ jobs:
     - name: Build and Install dtn7
       run: |
         cd dtn7-go
+        git pull origin master
         go build ./cmd/dtn-tool
         install dtn-tool /usr/local/bin/
         go build ./cmd/dtnd
         install dtnd /usr/local/bin
-
 
     - name: Link dotcore and bin files
       run: |
