@@ -5,7 +5,7 @@
 
 name: Deadlock Experiment Testing
 
-on: [push, pull_request]
+on: repository_dispatch
 
 jobs:
   core:
