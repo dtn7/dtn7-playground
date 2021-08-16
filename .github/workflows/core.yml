@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: 2021 Jonas Höchst
 # SPDX-FileCopyrightText: 2021 Artur Sterz
+# SPDX-FileCopyrightText: 2021 Alvar Penning
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -43,7 +44,8 @@ jobs:
     - name: Build and Install dtn7
       run: |
         cd dtn7-go
-        git pull origin master
+        git checkout master
+        git pull
         go build ./cmd/dtn-tool
         install dtn-tool /usr/local/bin/
         go build ./cmd/dtnd
