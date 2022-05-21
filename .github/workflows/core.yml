@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: 2021 Jonas Höchst
 # SPDX-FileCopyrightText: 2021 Artur Sterz
-# SPDX-FileCopyrightText: 2021 Alvar Penning
+# SPDX-FileCopyrightText: 2021, 2022 Alvar Penning
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -32,12 +32,12 @@ jobs:
         apt-get install -y nodejs psmisc git
 
     - name: Setup Go
-      uses: actions/setup-go@v2
+      uses: actions/setup-go@v3
       with:
-        go-version: '^1.16'
+        go-version: '^1.18'
 
     - name: Checkout repo with submodules
-      uses: actions/checkout@v2.3.4
+      uses: actions/checkout@v3
       with:
         submodules: recursive
 
@@ -46,6 +46,7 @@ jobs:
         cd dtn7-go
         git checkout master
         git pull
+        git describe
         go build ./cmd/dtn-tool
         install dtn-tool /usr/local/bin/
         go build ./cmd/dtnd
@@ -67,7 +68,7 @@ jobs:
         python3 /root/.core/experiments/deadlock.py
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: logfiles
         path: |
