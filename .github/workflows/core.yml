@@ -46,7 +46,6 @@ jobs:
         cd dtn7-go
         git checkout master
         git pull
-        git describe
         go build ./cmd/dtn-tool
         install dtn-tool /usr/local/bin/
         go build ./cmd/dtnd
