@@ -65,10 +65,10 @@ if __name__ in ["__main__", "__builtin__"]:
     coreemu = CoreEmu()
     session = coreemu.create_session()
     session.set_state(EventTypes.CONFIGURATION_STATE)
-    ServiceManager.add_services(Path("/root/.core/myservices"))
+    ServiceManager.add_services(Path("/root/.coregui/custom_services"))
 
     logging.info("Starting virtual nodes.")
-    session.open_xml(Path("/root/.core/configs/topology.xml"), start=True)
+    session.open_xml(Path("/root/.coregui/configs/topology.xml"), start=True)
     time.sleep(10)
 
     logging.info(f"Experiment is running for {runtime} seconds.")

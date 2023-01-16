@@ -55,7 +55,7 @@ jobs:
 
     - name: Link dotcore and bin files
       run: |
-        ln -s $PWD/dotcore /root/.core
+        ln -s $PWD/dotcore /root/.coregui
         echo "$PWD/bin" >> $GITHUB_PATH
 
     - name: Run experiment
@@ -66,7 +66,7 @@ jobs:
         BUNDLES_PER_NODE: ${{ matrix.bundles_per_node }}
         PAYLOAD_SIZE: ${{ matrix.payload_size }}
       run: |
-        /opt/core/venv/bin/python3 /root/.core/experiments/run.py
+        /opt/core/venv/bin/python3 /root/.coregui/experiments/run.py
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v3

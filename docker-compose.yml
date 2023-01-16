@@ -7,12 +7,12 @@ services:
     volumes:
       - /lib/modules:/lib/modules
       - /tmp/.X11-unix:/tmp/.X11-unix
-      - ./dotcore:/root/.core
+      - ./dotcore:/root/.coregui
       - ./bin:/root/bin
     privileged: true
     cap_add:
       - NET_ADMIN
       - SYS_ADMIN
     environment:
-      - CORE_PARAMS=/root/.core/configs/test_loss.imn
+      - CORE_PARAMS=/root/.coregui/configs/topology.xml
       - DISPLAY

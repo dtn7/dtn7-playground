@@ -1,14 +1,14 @@
 ### Container to build dtn7-go
-FROM golang:1.15 AS dtn7-go-builder
+FROM golang:1.19 AS dtn7-go-builder
 
 COPY dtn7-go /dtn7-go
 WORKDIR /dtn7-go
-RUN go build -race -o /dtnd ./cmd/dtnd \
-  && go build -race -o /dtn-tool ./cmd/dtn-tool
+RUN go build -race -buildvcs=false -o /dtnd ./cmd/dtnd \
+  && go build -race -buildvcs=false -o /dtn-tool ./cmd/dtn-tool
 
 
 ### CORE Container
-FROM maciresearch/core_worker:7.5.1-1
+FROM maciresearch/core_worker:9.0.1
 
 RUN apt-get update \
   && apt-get install --no-install-recommends -yq \
@@ -18,7 +18,7 @@ RUN apt-get update \
   wireshark \
   && apt-get clean
 
-RUN echo 'custom_services_dir = /root/.core/myservices' >> /etc/core/core.conf
+RUN echo 'custom_services_dir = /root/.coregui/custom_services' >> /etc/core/core.conf
 
 COPY icons/normal/* /usr/local/share/core/icons/normal/
 COPY icons/tiny/* /usr/local/share/core/icons/tiny/

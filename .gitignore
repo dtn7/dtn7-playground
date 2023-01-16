@@ -114,3 +114,9 @@ dotcore/plugins.conf
 dotcore/servers.conf
 dotcore/widgets.conf
 dotcore/prefs.conf
+dotcore/backgrounds/**
+dotcore/config.yaml
+dotcore/icons/**
+dotcore/mobility/**
+dotcore/xmls/**
+**/__pycache__/**

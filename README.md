@@ -6,7 +6,7 @@ This branch aims to give a framework for extended DTN7-Go testing using the
 ### Structure
 The `dotcore` folder holds all configurations required for CORE.
 `dotcore/configs` holds all XML and IMN files to describe a scenario.
-`dotcore/myservice` contains the service for starting a DTN7-Go node together
+`dotcore/custom_services` contains the service for starting a DTN7-Go node together
 with a traffic generator, i.e., a small program to generate and send bundles
 periodically. `dotcore/experiments` holds the experiment Python script for a
 particular experiment. The `bin` folder holds the traffic generator itself,
@@ -20,7 +20,7 @@ export and place it using a meaningful name in the `dotcore/configs` folder.
 After that, write your experiment using Cores Python API and store it with a
 meaningful name in `dotcore/experiments`. If you have to use custom Core
 Services, you have to write them yourself and place them accordingly in the
-`dotcore/myservices` folder. Finally, define the steps for the test either in a
+`dotcore/custom_services` folder. Finally, define the steps for the test either in a
 new workflow YAML file or in the existing on a as new job and place it in the
 `.github/workflow` folder.
 
