@@ -64,7 +64,7 @@ jobs:
         BUNDLES_PER_NODE: ${{ matrix.bundles_per_node }}
         PAYLOAD_SIZE: ${{ matrix.payload_size }}
       run: |
-        python3 /root/.core/experiments/run.py
+        /opt/core/venv/bin/python3 /root/.core/experiments/run.py
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v3
