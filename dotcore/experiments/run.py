@@ -6,8 +6,8 @@ import shutil
 import glob
 import logging
 import re
-import datetime
 import sys
+from datetime import datetime
 from pathlib import Path
 
 from core.emulator.coreemu import CoreEmu
