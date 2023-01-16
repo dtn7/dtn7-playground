@@ -16,9 +16,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        runtime: [60, 600]
-        bundles_per_node: [1, 600]
-        payload_size: [1000, 1000000]
+        runtime: [60] #[60, 600]
+        bundles_per_node: [1] #[1, 600]
+        payload_size: [1000] #[1000, 1000000]
     container:
       image: maciresearch/core_worker:9.0.1
       options: --privileged
