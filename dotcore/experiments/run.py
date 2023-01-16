@@ -6,9 +6,7 @@ import shutil
 import glob
 import logging
 import re
-import sys
-
-from datetime import datetime
+from pathlib import Path
 
 from core.emulator.coreemu import CoreEmu
 from core.emulator.enumerations import EventTypes
@@ -65,7 +63,7 @@ if __name__ in ["__main__", "__builtin__"]:
     coreemu = CoreEmu()
     session = coreemu.create_session()
     session.set_state(EventTypes.CONFIGURATION_STATE)
-    print(ServiceManager.add_services("/root/.core/myservices"))
+    ServiceManager.add_services(Path("/root/.core/myservices"))
 
     logging.info("Starting virtual nodes.")
     session.open_xml(file_name="/root/.core/configs/topology.xml", start=True)
