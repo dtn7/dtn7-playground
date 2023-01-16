@@ -77,12 +77,12 @@ if __name__ in ["__main__", "__builtin__"]:
     session.set_state(EventTypes.DATACOLLECT_STATE)
 
     logging.info("Checking logs if something went wrong.")
-    return_code = check_success(session.session_dir)
+    return_code = check_success(session.directory)
 
     logging.info("Collecting logs.")
     now = datetime.now().strftime("%Y%m%d_%H%M%S")
     log_dest_dir = f"/tmp/results/{now}"
-    collect_logs(session.session_dir, runtime, bpn, payload, dest_dir=log_dest_dir)
+    collect_logs(session.directory, runtime, bpn, payload, dest_dir=log_dest_dir)
 
     logging.info("Shutting down CORE.")
     coreemu.shutdown()
