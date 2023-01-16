@@ -6,6 +6,8 @@ import shutil
 import glob
 import logging
 import re
+import datetime
+import sys
 from pathlib import Path
 
 from core.emulator.coreemu import CoreEmu
@@ -66,7 +68,7 @@ if __name__ in ["__main__", "__builtin__"]:
     ServiceManager.add_services(Path("/root/.core/myservices"))
 
     logging.info("Starting virtual nodes.")
-    session.open_xml(file_name="/root/.core/configs/topology.xml", start=True)
+    session.open_xml(Path("/root/.core/configs/topology.xml"), start=True)
     time.sleep(10)
 
     logging.info(f"Experiment is running for {runtime} seconds.")
