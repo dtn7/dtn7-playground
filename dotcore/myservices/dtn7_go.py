@@ -46,7 +46,7 @@ websocket = true
 rest = true
 
 [[listen]]
-protocol = "mtcp"
+protocol = "quicl"
 endpoint = ":4556"
 [routing]
 algorithm = "epidemic"
