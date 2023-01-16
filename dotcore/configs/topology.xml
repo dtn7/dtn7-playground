@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<scenario name="deadlock.xml">
+<scenario name="topology.xml">
   <networks>
     <network id="32" name="wlan32" type="WIRELESS_LAN">
       <position x="164" y="102" lat="47.578548599498326" lon="-122.13084876293404" alt="2.0"/>

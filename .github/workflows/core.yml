@@ -1,10 +1,10 @@
 # SPDX-FileCopyrightText: 2021 Jonas Höchst
-# SPDX-FileCopyrightText: 2021 Artur Sterz
+# SPDX-FileCopyrightText: 2021, 2023 Artur Sterz
 # SPDX-FileCopyrightText: 2021, 2022 Alvar Penning
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-name: Deadlock Experiment Testing
+name: Extended Testing
 
 on: repository_dispatch
 
@@ -20,7 +20,7 @@ jobs:
         bundles_per_node: [1, 600]
         payload_size: [1000, 1000000]
     container:
-      image: maciresearch/core_worker:7.5.1-1
+      image: maciresearch/core_worker:9.0.1
       options: --privileged
       volumes:
         - /lib/modules/:/lib/modules/
@@ -34,7 +34,7 @@ jobs:
     - name: Setup Go
       uses: actions/setup-go@v3
       with:
-        go-version: '^1.18'
+        go-version: '^1.19'
 
     - name: Checkout repo with submodules
       uses: actions/checkout@v3
@@ -64,7 +64,7 @@ jobs:
         BUNDLES_PER_NODE: ${{ matrix.bundles_per_node }}
         PAYLOAD_SIZE: ${{ matrix.payload_size }}
       run: |
-        python3 /root/.core/experiments/deadlock.py
+        python3 /root/.core/experiments/run.py
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v3

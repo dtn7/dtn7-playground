@@ -29,6 +29,6 @@ DTN7-Go tends to deadlock after some time, making it impossible to send any
 bundles. Therefore, the `Run CORE experiments` jobs defines 30 CORE nodes that
 are more or less connected randomly and sending a different number of files with
 various sizes over a time period. The main experiment script is the
-`dotcore/experiments/deadlock.py` Python file, which starts the
-`dotcore/configs/deadlock.xml` scenario. The corresponding Github Workflow is
-called `Deadlock Experiment Testing` in the `.github/workflows/core.yml` file.
+`dotcore/experiments/run.py` Python file, which starts the
+`dotcore/configs/topology.xml` scenario. The corresponding Github Workflow is
+called `Extended Testing` in the `.github/workflows/core.yml` file.

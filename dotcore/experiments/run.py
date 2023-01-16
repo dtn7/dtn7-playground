@@ -68,7 +68,7 @@ if __name__ in ["__main__", "__builtin__"]:
     print(ServiceManager.add_services("/root/.core/myservices"))
 
     logging.info("Starting virtual nodes.")
-    session.open_xml(file_name="/root/.core/configs/deadlock.xml", start=True)
+    session.open_xml(file_name="/root/.core/configs/topology.xml", start=True)
     time.sleep(10)
 
     logging.info(f"Experiment is running for {runtime} seconds.")
