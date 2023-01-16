@@ -30,6 +30,7 @@ jobs:
       run: |
         apt-get update
         apt-get install -y nodejs psmisc git
+        /opt/core/venv/bin/pip3 install requests
 
     - name: Setup Go
       uses: actions/setup-go@v3

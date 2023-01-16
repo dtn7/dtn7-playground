@@ -3,12 +3,12 @@
 import random
 import time
 import string
-import requests
 import json
 import argparse
 import platform
 import logging
 import os
+import requests
 
 from hashlib import sha1
 from requests.exceptions import Timeout
