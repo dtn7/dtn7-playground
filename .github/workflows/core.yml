@@ -45,7 +45,8 @@ jobs:
     - name: Build and Install dtn7
       run: |
         cd dtn7-go
-        git checkout master
+        git fetch origin pull/57/head:quicl
+        git checkout quicl
         git pull
         go build ./cmd/dtn-tool
         install dtn-tool /usr/local/bin/
