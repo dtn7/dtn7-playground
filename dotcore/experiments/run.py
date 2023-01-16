@@ -12,7 +12,7 @@ from datetime import datetime
 
 from core.emulator.coreemu import CoreEmu
 from core.emulator.enumerations import EventTypes
-from core.services import ServiceManager
+from core.services.coreservices import ServiceManager
 
 
 def collect_logs(session_dir, runtime, bpn, payload, dest_dir="/tmp/results"):
